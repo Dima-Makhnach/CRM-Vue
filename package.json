@@ -10,9 +10,15 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "firebase": "^7.9.1",
+    "jquery": "^3.4.1",
+    "materialize-css": "^1.0.0-rc.2",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.15.4",
     "vue-router": "^3.1.5",
+    "vue-toasted": "^1.1.27",
+    "vuelidate": "^0.7.5",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
@@ -26,6 +32,7 @@
     "@vue/eslint-config-standard": "^5.1.0",
     "@vue/test-utils": "1.0.0-beta.31",
     "babel-eslint": "^10.0.3",
+    "css-loader": "^3.4.2",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
