@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="card-body pt-5">
+    <div class="text-center">
+      <h4>Регистрация</h4>
+    </div>
     <form class="mt-5 mb-5 login-input" @submit.prevent="handlerSubmit">
       <div class="form-group">
         <label>
@@ -12,7 +15,7 @@
         </label>
         <small
           v-if="$v.name.$dirty && !$v.name.required"
-          class="text-invalid">Name don't be empty!</small>
+          class="text-invalid">Имя не должно быть пустым!</small>
       </div>
       <div class="form-group">
         <label>
@@ -25,10 +28,10 @@
         </label>
         <small
           v-if="$v.email.$dirty && !$v.email.required"
-          class="text-invalid">Email don't be empty!</small>
+          class="text-invalid">Поле почта не должно быть пустым!</small>
         <small
           v-else-if="$v.email.$dirty && !$v.email.email"
-          class="text-invalid">Email value error!</small>
+          class="text-invalid">Формат почты не верен!</small>
       </div>
       <div class="form-group">
         <label>
@@ -41,16 +44,15 @@
         </label>
         <small
           v-if="$v.password.$dirty && !$v.password.required"
-          class="text-invalid">Password don't be empty!</small>
+          class="text-invalid">Пароль не должен быть пустой!</small>
         <small
           v-if="$v.password.$dirty && !$v.password.minLength"
-          class="text-invalid">Password min length {{$v.password.$params.minLength.min}} characters. Now is {{password.length}}</small>
+          class="text-invalid">Минимальная длина пароля {{$v.password.$params.minLength.min}} символов. Сейчас {{password.length}}</small>
       </div>
-      <button class="btn login-form__btn submit w-100">Sign in</button>
+      <button class="btn login-form__btn submit w-100">Зарегестрироваться</button>
     </form>
-    <p class="mt-5 login-form__footer">Do you have account?
-      <router-link to="/login" class="text-primary">Sign Up</router-link>
-      now
+    <p class="mt-5 login-form__footer">Есть ауккаунт?
+      <router-link to="/login" class="text-primary">Войти</router-link>
     </p>
   </div>
 </template>
@@ -94,7 +96,7 @@ export default {
 
       try {
         const { user } = await this.register({ name: this.name, email: this.email, password: this.password })
-        await this.addUser({ id: user.uid, name: this.name })
+        await this.addUser({ id: user.uid, name: this.name, email: this.email })
 
         this.$router.push('/')
       } catch (e) {

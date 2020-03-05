@@ -1,26 +1,35 @@
 import * as fb from '../firebaseconfig'
+import firebase from 'firebase'
 
 const user = {
-  state: {
-    user: {}
-  },
   namespaced: true,
-  mutations: {
-    setUser (state, data) {
-      state.user = data
-    },
-    clearData (state) {
-      state.user = {}
-    }
-  },
   actions: {
-    getUser({ commit } )
-    addUser ({ commit }, { id, name }) {
+    async getUser ({ dispatch }) {
+      try {
+        const id = await dispatch('_getUserId', null, { root: true })
+
+        return fb.db.ref(`users/${id}/info`).once('value')
+      } catch (e) {
+        console.log(`Error in fetch user UID [actions/user/getUser]: ${e}`)
+      }
+    },
+    addUser ({ commit }, { id, name, email }) {
       return fb.db.ref(`users/${id}/info`).set({
         bill: 100000,
         image: 'https://imgholder.ru/40x40/8493a8/adb9ca&text=IMAGE+HOLDER&font=kelson',
-        name
+        name,
+        email
       })
+    },
+    async updateUser ({ commit, dispatch }, { password, ...rest }) {
+      try {
+        const id = await dispatch('_getUserId', null, { root: true })
+        await firebase.auth().currentUser.updatePassword(password)
+
+        return fb.db.ref(`users/${id}/info`).update({ ...rest })
+      } catch (e) {
+        console.log(`Error in fetch user UID [actions/user/getUser]: ${e}`)
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
     <Header v-model="isOpenMenu" @toggleMenu="isOpenMenu = !isOpenMenu"/>
     <SideBar/>
     <div class="content-body">
-      <BreadCrumbs/>
+<!--      <BreadCrumbs/>-->
       <div class="container-fluid">
         <router-view/>
       </div>
@@ -18,7 +18,6 @@ import NavHeader from '../components/NavHeader'
 import Header from '../components/Header'
 import SideBar from '../components/SideBar'
 import Footer from '../components/Footer'
-import BreadCrumbs from '../components/BreadCrumbs'
 
 export default {
   name: 'main-layout',
@@ -31,8 +30,7 @@ export default {
     NavHeader,
     Header,
     SideBar,
-    Footer,
-    BreadCrumbs
+    Footer
   }
 }
 </script>
@@ -40,5 +38,9 @@ export default {
 <style lang="scss" scoped>
   [v-cloak] {
     display: none;
+  }
+
+  .container-fluid {
+    min-height: 100vh;
   }
 </style>

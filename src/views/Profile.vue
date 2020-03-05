@@ -1,41 +1,27 @@
 <template>
-  <div class="row">
+  <div class="row profile h-100">
     <div class="col-lg-4 col-xl-3">
-      <div class="card">
-        <div class="card-body">
+      <div class="card card-container-profile">
+        <Loader class="card-container-profile__loader" v-if="loading" />
+        <div v-else class="card-body">
           <div class="media align-items-center mb-4">
-            <img class="mr-3" src="../assets/images/avatar/11.png" width="80" height="80" alt="">
+            <img class="mr-3" :src="user.image" width="80" height="80" :alt="user.name">
             <div class="media-body">
-              <h3 class="mb-0">Pikamy Cha</h3>
-              <p class="text-muted mb-0">Canada</p>
+              <h3 class="mb-0">{{user.name}}</h3>
+              <p class="text-muted mb-0">{{user.country}}</p>
             </div>
           </div>
-
-          <div class="row mb-5">
-            <div class="col">
-              <div class="card card-profile text-center">
-                <span class="mb-1 text-primary"><i class="icon-people"></i></span>
-                <h3 class="mb-0">263</h3>
-                <p class="text-muted px-4">Following</p>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card card-profile text-center">
-                <span class="mb-1 text-warning"><i class="icon-user-follow"></i></span>
-                <h3 class="mb-0">263</h3>
-                <p class="text-muted">Followers</p>
-              </div>
-            </div>
-            <div class="col-12 text-center">
-              <button class="btn btn-danger px-5">Follow Now</button>
-            </div>
-          </div>
-
-          <h4>About Me</h4>
-          <p class="text-muted">Hi, I'm Pikamy, has been the industry standard dummy text ever since the 1500s.</p>
+          <h4>Обо мне</h4>
+          <p class="text-muted">{{user.description}}</p>
           <ul class="card-profile__info">
-            <li class="mb-1"><strong class="text-dark mr-4">Mobile</strong> <span>01793931609</span></li>
-            <li><strong class="text-dark mr-4">Email</strong> <span>name@domain.com</span></li>
+            <li class="mb-1">
+              <strong class="text-dark mr-4">Телефон</strong>
+              <span>{{user.phone}}</span>
+            </li>
+            <li>
+              <strong class="text-dark mr-4">Почта</strong>
+              <span>{{user.email}}</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -43,123 +29,57 @@
     <div class="col-lg-8 col-xl-9">
       <div class="card">
         <div class="card-body">
-          <form action="#" class="form-profile">
+          <form @submit.prevent="handlerSubmit" class="form-profile">
             <div class="form-group">
-                <textarea class="form-control" name="textarea" id="textarea" cols="30" rows="2"
-                          placeholder="Post a new message"></textarea>
+                <textarea
+                  class="form-control"
+                  name="textarea"
+                  id="textarea"
+                  v-model.trim="textNote"
+                  cols="30"
+                  rows="2"
+                  :class="{ invalid: ($v.textNote.$dirty && !$v.textNote.required) || ($v.textNote.$dirty && !$v.textNote.minLength) }"
+                  placeholder="Написать новую заметку"></textarea>
+                <small
+                  v-if="$v.textNote.$dirty && !$v.textNote.required"
+                  class="text-invalid">Текстовая область не должна быть пустой!</small>
+                <small
+                  v-if="$v.textNote.$dirty && !$v.textNote.minLength"
+                  class="text-invalid">Минимальная длина {{$v.textNote.$params.minLength.min}} символов. Сейчас {{textNote.length}}</small>
             </div>
             <div class="d-flex align-items-center">
-              <ul class="mb-0 form-profile__icons">
-                <li class="d-inline-block">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-user"></i></button>
-                </li>
-                <li class="d-inline-block">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-paper-plane"></i></button>
-                </li>
-                <li class="d-inline-block">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-camera"></i></button>
-                </li>
-                <li class="d-inline-block">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-smile"></i></button>
-                </li>
-              </ul>
-              <button class="btn btn-primary px-3 ml-4">Send</button>
+              <button class="btn btn-primary px-3">Добавить</button>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div class="media media-reply">
-            <img class="mr-3 circle-rounded" src="../assets/images/avatar/2.jpg" width="50" height="50"
-                 alt="Generic placeholder image">
+      <div class="card card-container-profile">
+        <Loader class="card-container-profile__loader" v-if="service.loading" />
+        <div v-else-if="posts.length" class="card-body">
+          <div v-for="post in posts" :key="post.id" class="media media-reply">
+            <img
+              class="mr-3 circle-rounded"
+              :src="user.image"
+              width="50"
+              height="50"
+              :alt="user.name">
             <div class="media-body">
               <div class="d-sm-flex justify-content-between mb-2">
-                <h5 class="mb-sm-0">Milan Gbah <small class="text-muted ml-3">about 3 days ago</small></h5>
-                <div class="media-reply__link">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
-                  <button class="btn btn-transparent text-dark font-weight-bold p-0 ml-2">Reply</button>
-                </div>
+                <h5 class="mb-sm-0">{{user.name}}
+                  <small class="text-muted ml-3">{{ new Date(post.time) | date('datetime') }}</small>
+                </h5>
               </div>
-
-              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-              <ul>
-                <li class="d-inline-block">
-                  <!--                      <img class="rounded" width="60" height="60" src="../assets/images/blog/2.jpg" alt="">-->
-                </li>
-                <li class="d-inline-block">
-                  <!--                      <img class="rounded" width="60" height="60" src="../assets/images/blog/3.jpg" alt="">-->
-                </li>
-                <li class="d-inline-block">
-                  <!--                      <img class="rounded" width="60" height="60" src="../assets/images/blog/4.jpg" alt="">-->
-                </li>
-                <li class="d-inline-block">
-                  <!--                      <img class="rounded" width="60" height="60" src="../assets/images/blog/1.jpg" alt="">-->
-                </li>
-              </ul>
-
-              <div class="media mt-3">
-                <img class="mr-3 circle-rounded circle-rounded" src="../assets/images/avatar/4.jpg" width="50"
-                     height="50"
-                     alt="Generic placeholder image">
-                <div class="media-body">
-                  <div class="d-sm-flex justify-content-between mb-2">
-                    <h5 class="mb-sm-0">Milan Gbah <small class="text-muted ml-3">about 3 days ago</small></h5>
-                    <div class="media-reply__link">
-                      <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
-                      <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
-                      <button class="btn btn-transparent p-0 ml-3 font-weight-bold">Reply</button>
-                    </div>
-                  </div>
-                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras
-                    purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                    vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                </div>
-              </div>
+              <p class="text-content">{{post.text}}</p>
+              <button class="button-delete-post" @click.prevent="() => handlerDelete(post.id)" type="button">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
-
-          <div class="media media-reply">
-            <img class="mr-3 circle-rounded" src="../assets/images/avatar/2.jpg" width="50" height="50"
-                 alt="Generic placeholder image">
-            <div class="media-body">
-              <div class="d-sm-flex justify-content-between mb-2">
-                <h5 class="mb-sm-0">Milan Gbah <small class="text-muted ml-3">about 3 days ago</small></h5>
-                <div class="media-reply__link">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
-                  <button class="btn btn-transparent p-0 ml-3 font-weight-bold">Reply</button>
-                </div>
-              </div>
-
-              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-            </div>
-          </div>
-
-          <div class="media media-reply">
-            <img class="mr-3 circle-rounded" src="../assets/images/avatar/2.jpg" width="50" height="50"
-                 alt="Generic placeholder image">
-            <div class="media-body">
-              <div class="d-sm-flex justify-content-between mb-2">
-                <h5 class="mb-sm-0">Milan Gbah <small class="text-muted ml-3">about 3 days ago</small></h5>
-                <div class="media-reply__link">
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
-                  <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
-                  <button class="btn btn-transparent p-0 ml-3 font-weight-bold">Reply</button>
-                </div>
-              </div>
-
-              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-            </div>
+        </div>
+        <div v-else class="card-body">
+          <div class="media-body">
+            <p class="media-body__text">Заметок нет</p>
           </div>
         </div>
       </div>
@@ -168,11 +88,115 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import { required, minLength } from 'vuelidate/lib/validators'
+
 export default {
-  name: 'Profile'
+  name: 'Profile',
+  data () {
+    return {
+      user: {},
+      loading: true,
+      error: null,
+      textNote: ''
+    }
+  },
+  created () {
+    this.getPosts()
+
+    this.getUser()
+      .then(res => {
+        this.user = res.val()
+        this.loading = false
+      })
+      .catch(err => {
+        this.error = err
+        this.loading = false
+      })
+  },
+  beforeDestroy () {
+    this.user = {}
+    this.error = null
+  },
+  computed: {
+    ...mapGetters('post', ['posts', 'service'])
+  },
+  validations: {
+    textNote: { required, minLength: minLength(50) }
+  },
+  methods: {
+    ...mapActions('user', ['getUser']),
+    ...mapActions('post', ['setPost', 'getPosts', 'deletePost']),
+    handlerSubmit () {
+      this.$v.$touch()
+
+      if (this.$v.$invalid) {
+        return
+      }
+
+      this.setPost(this.textNote)
+
+      this.$v.$reset()
+      this.textNote = ''
+    },
+    handlerDelete (id) {
+      this.deletePost(id)
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .profile {
+    height: 100vh;
+  }
 
+  .media-body {
+    position: relative;
+
+    &__text {
+      margin-bottom: 0;
+      height: 100%;
+    }
+  }
+
+  .login-input .form-group .form-control.invalid {
+    border-color: red;
+  }
+
+  .text-invalid {
+    display: block;
+    color: red;
+  }
+
+  .button-delete-post {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    background-color: transparent;
+    border: 0px;
+
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  .text-content {
+    margin-bottom: 0;
+  }
+
+  .card-container-profile {
+    position: relative;
+
+    min-height: 50px;
+
+    &__loader {
+      width: 30px;
+      height: 30px;
+    }
+  }
 </style>

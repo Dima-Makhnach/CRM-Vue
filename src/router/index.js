@@ -12,26 +12,20 @@ const routes = [
     component: () => import('../views/Auth/Login')
   },
   {
-    path: '/lock',
-    name: 'lock',
-    meta: { layout: 'auth-layout' },
-    component: () => import('../views/Auth/Lock')
-  },
-  {
     path: '/register',
     name: 'register',
     meta: { layout: 'auth-layout' },
     component: () => import('../views/Auth/Register')
   },
-  {
-    path: '/',
-    name: 'home',
-    meta: {
-      layout: 'main-layout',
-      authFlag: true
-    },
-    component: () => import('../views/Home')
-  },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   meta: {
+  //     layout: 'main-layout',
+  //     authFlag: true
+  //   },
+  //   component: () => import('../views/Home')
+  // },
   {
     path: '/profile',
     name: 'profile',
@@ -42,15 +36,6 @@ const routes = [
     component: () => import('../views/Profile')
   },
   {
-    path: '/detail',
-    name: 'detail',
-    meta: {
-      layout: 'main-layout',
-      authFlag: true
-    },
-    component: () => import('../views/Detail')
-  },
-  {
     path: '/history',
     name: 'history',
     meta: {
@@ -58,6 +43,15 @@ const routes = [
       authFlag: true
     },
     component: () => import('../views/History')
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    meta: {
+      layout: 'main-layout',
+      authFlag: true
+    },
+    component: () => import('../views/Categories')
   },
   {
     path: '/planning',
@@ -78,43 +72,6 @@ const routes = [
     component: () => import('../views/Record')
   },
   {
-    path: '/calendar',
-    name: 'calendar',
-    meta: {
-      layout: 'main-layout',
-      authFlag: true
-    },
-    component: () => import('../views/Calendar')
-  },
-  {
-    path: '/email',
-    name: 'email',
-    meta: {
-      layout: 'main-layout',
-      authFlag: true
-    },
-    component: () => import('../views/Email'),
-    redirect: '/email/inbox',
-    children: [
-      {
-        path: 'compose',
-        component: () => import('../views/Email/Compose')
-      },
-      {
-        path: 'inbox',
-        component: () => import('../views/Email/Inbox')
-      },
-      {
-        path: 'read',
-        component: () => import('../views/Email/Read')
-      },
-      {
-        path: '*',
-        redirect: 'inbox'
-      }
-    ]
-  },
-  {
     path: '/settings',
     name: 'settings',
     meta: {
@@ -127,12 +84,11 @@ const routes = [
       {
         path: 'user',
         name: 'settings/user',
+        meta: {
+          layout: 'main-layout',
+          authFlag: true
+        },
         component: () => import('../views/Settings/User')
-      },
-      {
-        path: 'account',
-        name: 'settings/account',
-        component: () => import('../views/Settings/Account')
       },
       {
         path: '*',
@@ -154,7 +110,7 @@ const routes = [
   },
   {
     path: '/404',
-    name: '404',
+    name: 'Not Found',
     meta: { layout: 'error-layout' },
     component: () => import('../views/Error/404')
   },
@@ -169,6 +125,10 @@ const routes = [
     name: '503',
     meta: { layout: 'error-layout' },
     component: () => import('../views/Error/503')
+  },
+  {
+    path: '/',
+    redirect: '/profile'
   },
   {
     path: '*',

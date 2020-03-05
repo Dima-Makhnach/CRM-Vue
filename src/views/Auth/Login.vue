@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="card-body pt-5">
+    <div class="text-center">
+      <h4>Войти</h4>
+    </div>
     <form class="mt-5 mb-5 login-input" @submit.prevent="handlerSubmit">
       <div class="form-group">
         <label>
@@ -8,14 +11,14 @@
             v-model.trim="email"
             class="form-control"
             :class="{ invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email) }"
-            placeholder="Email">
+            placeholder="Почта">
         </label>
         <small
           v-if="$v.email.$dirty && !$v.email.required"
-          class="text-invalid">Email don't be empty!</small>
+          class="text-invalid">Поле почта не должно быть пустым!</small>
         <small
           v-else-if="$v.email.$dirty && !$v.email.email"
-          class="text-invalid">Email value error!</small>
+          class="text-invalid">Формат почты не верен!</small>
       </div>
       <div class="form-group">
         <label>
@@ -24,22 +27,20 @@
             v-model.trim="password"
             class="form-control"
             :class="{ invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength) }"
-            placeholder="Password">
+            placeholder="Пароль">
         </label>
         <small
           v-if="$v.password.$dirty && !$v.password.required"
-          class="text-invalid">Password don't be empty!</small>
+          class="text-invalid">Пароль не должен быть пустой!</small>
         <small
           v-if="$v.password.$dirty && !$v.password.minLength"
-          class="text-invalid">Password min length {{$v.password.$params.minLength.min}} characters. Now is {{password.length}}</small>
+          class="text-invalid">Минимальная длина пароля {{$v.password.$params.minLength.min}} символов. Сейчас {{password.length}}</small>
       </div>
-      <button class="btn login-form__btn submit w-100">Sign In</button>
+      <button class="btn login-form__btn submit w-100">Войти</button>
     </form>
-    <p class="mt-5 login-form__footer">Dont have account?
-      <router-link to="/register" class="text-primary">Register</router-link>
-      now
+    <p class="mt-5 login-form__footer">Нет аккаунта?
+      <router-link to="/register" class="text-primary">Регистрация</router-link>
     </p>
-    <button @click="logout">logout</button>
   </div>
 </template>
 
@@ -75,7 +76,7 @@ export default {
     password: { required, minLength: minLength(6) }
   },
   methods: {
-    ...mapActions('auth', ['login', 'logout']),
+    ...mapActions('auth', ['login']),
     handlerSubmit () {
       if (this.$v.$invalid) {
         this.$v.$touch()

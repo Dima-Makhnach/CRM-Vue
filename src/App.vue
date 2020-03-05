@@ -9,12 +9,14 @@
 <script>
 import AuthLayout from './layouts/AuthLayout'
 import MainLayout from './layouts/MainLayout'
+import ErrorLayout from './layouts/ErrorLayout'
 
 export default {
   name: 'App',
   components: {
     AuthLayout,
-    MainLayout
+    MainLayout,
+    ErrorLayout
   },
   computed: {
     layout () {

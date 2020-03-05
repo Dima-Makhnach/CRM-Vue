@@ -2,6 +2,7 @@
   <div class="nk-sidebar">
     <div class="nk-nav-scroll">
       <ul class="metismenu" id="metismenu" ref="metismenu">
+
         <router-link
           v-for="link in links"
           :to="link.path"
@@ -14,10 +15,10 @@
               :class="{ 'has-arrow': link.children }"
               @click="navigate"
               aria-expanded="false">
-              <i class="icon-speedometer menu-icon"></i>
+              <i class="menu-icon" :class="link.icon" ></i>
               <span class="nav-text">{{link.name}}</span>
             </a>
-            <ul v-if="link.children" class="collapse" :class="{ in: isActive }" aria-expanded="false">
+            <ul v-if="link.children" class="collapse" :class="{ 'in show': isActive }" aria-expanded="false">
               <li v-for="subItem in link.children" :key="subItem.path">
                 <router-link :to="link.path + subItem.path" active-class="active">
                   {{subItem.name}}
@@ -26,6 +27,7 @@
             </ul>
           </li>
         </router-link>
+
       </ul>
     </div>
   </div>
@@ -37,28 +39,18 @@ export default {
   data () {
     return {
       links: [
-        { path: '/', name: 'Главная', exact: true },
-        { path: '/profile', name: 'Профиль' },
-        { path: '/detail', name: 'Detail' },
-        { path: '/history', name: 'История записей' },
-        { path: '/planning', name: 'Планирование' },
-        { path: '/record', name: 'Запись' },
-        { path: '/calendar', name: 'Календарь' },
-        {
-          path: '/email',
-          name: 'Email',
-          children: [
-            { path: '/inbox', name: 'Входящие' },
-            { path: '/compose', name: 'Написать' },
-            { path: '/read', name: 'Сообщение' }
-          ]
-        },
+        // { path: '/', name: 'Главная', icon: 'fas fa-home', exact: true },
+        { path: '/profile', name: 'Профиль', icon: 'fas fa-user' },
+        { path: '/history', name: 'История записей', icon: 'fas fa-history' },
+        { path: '/planning', name: 'Планирование', icon: 'fas fa-ruler-combined' },
+        { path: '/categories', name: 'Категории трат', icon: 'fas fa-book' },
+        { path: '/record', name: 'Новая запись', icon: 'fas fa-video' },
         {
           path: '/settings',
           name: 'Настройки',
+          icon: 'fas fa-sliders-h',
           children: [
-            { path: '/user', name: 'Личные данные' },
-            { path: '/account', name: 'Настройки аккаунта' }
+            { path: '/user', name: 'Личные данные' }
           ]
         }
       ]

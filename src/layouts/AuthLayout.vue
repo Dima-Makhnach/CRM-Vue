@@ -5,12 +5,7 @@
         <div class="col-xl-6">
           <div class="form-input-content">
             <div class="card login-form mb-0">
-              <div class="card-body pt-5">
-                <router-link class="text-center" to="/">
-                  <h4>Rosella</h4>
-                </router-link>
-                <router-view/>
-              </div>
+              <router-view/>
             </div>
           </div>
         </div>
@@ -21,8 +16,7 @@
 
 <script>
 export default {
-  name: 'auth-layout',
-  components: {}
+  name: 'auth-layout'
 }
 </script>
 

@@ -1,6 +1,5 @@
 <template>
   <div class="h-100">
-    <Preloader/>
     <div class="login-form-bg h-100">
       <div class="container h-100">
         <div class="row justify-content-center h-100">
@@ -18,10 +17,7 @@
 </template>
 
 <script>
-import Preloader from '../components/Preloader'
-
 export default {
-  name: 'error-layout',
-  components: { Preloader }
+  name: 'error-layout'
 }
 </script>

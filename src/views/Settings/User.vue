@@ -4,115 +4,66 @@
       <div class="card">
         <div class="card-body">
           <div class="form-validation">
-            <form class="form-valide" action="#" method="post">
+            <form class="form-valide" @submit.prevent="handlerSubmit">
               <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-username">Username <span class="text-danger">*</span>
+                <label class="col-lg-4 col-form-label" for="val-username">Имя <span class="text-danger">*</span>
                 </label>
                 <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-username" name="val-username" placeholder="Enter a username..">
+                  <input type="text" class="form-control" v-model="name" id="val-username" name="val-username" placeholder="Введите имя..">
                 </div>
+                <small
+                  v-if="$v.name.$dirty && !$v.name.required"
+                  class="text-invalid">Имя не должно быть пустым!</small>
+                <small
+                  v-else-if="$v.name.$dirty && !$v.name.minLength"
+                  class="text-invalid">Минимальная длина {{$v.name.$params.minLength.min}}!</small>
               </div>
               <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-email">Email <span class="text-danger">*</span>
+                <label class="col-lg-4 col-form-label" for="val-email">Почта <span class="text-danger">*</span>
                 </label>
                 <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-email" name="val-email" placeholder="Your valid email..">
+                  <input type="text" class="form-control" v-model="email" id="val-email" name="val-email" placeholder="Ваша почта..">
                 </div>
+                <small
+                  v-if="$v.email.$dirty && !$v.email.required"
+                  class="text-invalid">Почта не должна быть пустой!</small>
+                <small
+                  v-else-if="$v.email.$dirty && !$v.email.email"
+                  class="text-invalid">Проверьте правильность почты!</small>
               </div>
               <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-password">Password <span class="text-danger">*</span>
+                <label class="col-lg-4 col-form-label" for="val-phoneus">Телефон <span class="text-danger">*</span>
                 </label>
                 <div class="col-lg-6">
-                  <input type="password" class="form-control" id="val-password" name="val-password" placeholder="Choose a safe one..">
+                  <input type="text" class="form-control" v-model="phone" id="val-phoneus" name="val-phoneus" placeholder="8 800 000-00-00">
                 </div>
+                <small
+                  v-if="$v.phone.$dirty && !$v.phone.required"
+                  class="text-invalid">Телефон не должен быть пустым!</small>
               </div>
               <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-confirm-password">Confirm Password <span class="text-danger">*</span>
+                <label class="col-lg-4 col-form-label" for="val-password">Пароль <span class="text-danger">*</span>
                 </label>
                 <div class="col-lg-6">
-                  <input type="password" class="form-control" id="val-confirm-password" name="val-confirm-password" placeholder="..and confirm it!">
+                  <input type="password" class="form-control" v-model="password" id="val-password" name="val-password" placeholder="Введите новый пароль..">
                 </div>
+                <small
+                  v-if="$v.password.$dirty && !$v.password.required"
+                  class="text-invalid">Поле пароль не должен быть пустым!</small>
               </div>
               <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-suggestions">Suggestions <span class="text-danger">*</span>
+                <label class="col-lg-4 col-form-label" for="val-suggestions">Обо мне <span class="text-danger">*</span>
                 </label>
                 <div class="col-lg-6">
-                  <textarea class="form-control" id="val-suggestions" name="val-suggestions" rows="5" placeholder="What would you like to see?"></textarea>
+                  <textarea class="form-control" id="val-suggestions" v-model="description" name="val-suggestions" rows="5" placeholder="Введите информацию о себе"></textarea>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-skill">Best Skill <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <select class="form-control" id="val-skill" name="val-skill">
-                    <option value="">Please select</option>
-                    <option value="html">HTML</option>
-                    <option value="css">CSS</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="angular">Angular</option>
-                    <option value="angular">React</option>
-                    <option value="vuejs">Vue.js</option>
-                    <option value="ruby">Ruby</option>
-                    <option value="php">PHP</option>
-                    <option value="asp">ASP.NET</option>
-                    <option value="python">Python</option>
-                    <option value="mysql">MySQL</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-currency">Currency <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="$21.60">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-website">Website <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-website" name="val-website" placeholder="http://example.com">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-phoneus">Phone (US) <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-phoneus" name="val-phoneus" placeholder="212-999-0000">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-digits">Digits <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-digits" name="val-digits" placeholder="5">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-number">Number <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-number" name="val-number" placeholder="5.0">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="val-range">Range [1, 5] <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" id="val-range" name="val-range" placeholder="4">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label"><a href="#">Terms &amp; Conditions</a>  <span class="text-danger">*</span>
-                </label>
-                <div class="col-lg-8">
-                  <label class="css-control css-control-primary css-checkbox" for="val-terms">
-                    <input type="checkbox" class="css-control-input" id="val-terms" name="val-terms" value="1"> <span class="css-control-indicator"></span> I agree to the terms</label>
-                </div>
+                <small
+                  v-if="$v.description.$dirty && !$v.description.required"
+                  class="text-invalid">Поле о себе не должен быть пустым!</small>
               </div>
               <div class="form-group row">
                 <div class="col-lg-8 ml-auto">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Изменить</button>
                 </div>
               </div>
             </form>
@@ -124,8 +75,59 @@
 </template>
 
 <script>
+import { required, email, minLength } from 'vuelidate/lib/validators'
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'User'
+  name: 'User',
+  data () {
+    return {
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+      description: '',
+      error: null
+    }
+  },
+  created () {
+    this.getUser()
+      .then(res => {
+        const value = res.val()
+        if (value) {
+          this.name = value.name
+          this.email = value.email
+          this.phone = value.phone
+          this.description = value.description
+        }
+      })
+      .catch(err => (this.error = err))
+  },
+  validations: {
+    name: { required, minLength: minLength(3) },
+    email: { required, email },
+    phone: { required },
+    password: { required, minLength: minLength(6) },
+    description: { required }
+  },
+  methods: {
+    ...mapActions('user', ['getUser', 'updateUser']),
+    handlerSubmit () {
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
+
+      this.updateUser({
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        password: this.password,
+        description: this.description
+      }).then(() => this.$toasted.global.message('Информация успешно обновлена!'))
+        .catch(() => this.$toasted.global.error('Ошибка обновления информации. Обратитесь к администратору!'))
+    }
+  }
 }
 </script>
 
